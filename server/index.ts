@@ -1,8 +1,41 @@
+require("dotenv").config();
 import express, { Request, Response } from "express";
+
+const morgan = require("morgan");
+const cors = require("cors");
+const helmet = require("helmet");
+const mongoose = require("mongoose");
+let session = require("express-session");
+
 const app = express();
 
-// Parse JSON
+app.use(morgan("combined"));
+app.use(helmet());
 app.use(express.json());
+app.use(cors());
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true },
+  })
+);
+
+mongoose.connect(
+  `${process.env.MONGO_DB}`,
+  {
+    useNewUrlParser: true,
+  },
+  (error: any) => {
+    if (error) {
+      console.log("Error: " + error);
+    } else {
+      console.log("DB connect");
+    }
+  }
+);
 
 app.get("/", (req: Request, res: Response) => {
   res.json({
