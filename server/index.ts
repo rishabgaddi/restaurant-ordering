@@ -14,6 +14,8 @@ app.use(helmet());
 app.use(express.json());
 app.use(cors());
 
+import authRouter from "./routes/auth";
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -37,9 +39,11 @@ mongoose.connect(
   }
 );
 
+app.use("/auth", authRouter);
+
 app.get("/", (req: Request, res: Response) => {
   res.json({
-    message: "Hello, this is Node.js, Express.js and TypeScript.",
+    message: "Backend server for Restaurant App",
   });
 });
 

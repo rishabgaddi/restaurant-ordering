@@ -16,16 +16,21 @@ export const userSchema = new Schema(
       type: Date,
       required: [true, "Date of birth is required."],
     },
+    country_code: {
+      type: String,
+      required: [true, "Country code is required."],
+      trim: true,
+    },
     phone: {
       type: String,
       required: [true, "Phone is required."],
       trim: true,
-      unique: true,
     },
     email: {
       type: String,
       required: [true, "Email is required."],
       trim: true,
+      unique: true,
     },
     token: {
       type: String,
@@ -38,5 +43,7 @@ export const userSchema = new Schema(
     },
   }
 );
+
+userSchema.index({ country_code: 1, phone: 1 }, { unique: true });
 
 export default model("User", userSchema);
