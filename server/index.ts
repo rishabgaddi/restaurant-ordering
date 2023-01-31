@@ -18,6 +18,8 @@ import authRouter from "./routes/auth";
 import qrRouter from "./routes/qr";
 import restaurantRouter from "./routes/restaurant";
 import tableRouter from "./routes/table";
+import cuisineRouter from "./routes/cuisine";
+import dishRouter from "./routes/dish";
 
 app.use(
   session({
@@ -46,6 +48,8 @@ app.use("/auth", authRouter);
 app.use("/qr", qrRouter);
 app.use("/restaurant", restaurantRouter);
 app.use("/table", tableRouter);
+app.use("/cuisine", cuisineRouter);
+app.use("/dish", dishRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.json({

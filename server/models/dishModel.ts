@@ -17,9 +17,14 @@ export const dishSchema = new Schema({
   },
   cuisine: {
     type: Schema.Types.ObjectId,
+    ref: "Cuisine",
+  },
+  restaurant: {
+    type: Schema.Types.ObjectId,
+    ref: "Restaurant",
   },
 });
 
-dishSchema.index({ name: 1, cuisine: 1 }, { unique: true });
+dishSchema.index({ name: 1, cuisine: 1, restaurant: 1 }, { unique: true });
 
 export default model("Dish", dishSchema);

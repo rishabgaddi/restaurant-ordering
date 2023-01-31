@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import { isAuth } from "../middleware/auth";
 import restaurantModel from "../models/restaurantModel";
+import userModel from "../models/userModel";
 
 const Router = express.Router();
 
@@ -11,6 +12,14 @@ Router.post(
     const { name, user_id } = req.body;
     if (name && name.length > 0 && user_id && user_id.length > 0) {
       try {
+        const user = await userModel.findOne({
+          _id: user_id,
+        });
+        if (!user) {
+          return res.status(400).json({
+            message: "User not found.",
+          });
+        }
         const restaurant = await restaurantModel.create({
           name,
           user: user_id,
