@@ -15,6 +15,9 @@ app.use(express.json());
 app.use(cors());
 
 import authRouter from "./routes/auth";
+import qrRouter from "./routes/qr";
+import restaurantRouter from "./routes/restaurant";
+import tableRouter from "./routes/table";
 
 app.use(
   session({
@@ -40,6 +43,9 @@ mongoose.connect(
 );
 
 app.use("/auth", authRouter);
+app.use("/qr", qrRouter);
+app.use("/restaurant", restaurantRouter);
+app.use("/table", tableRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.json({
