@@ -50,6 +50,20 @@ Router.post(
   }
 );
 
+Router.get("/otp", async (req: Request, res: Response): Promise<Response> => {
+  const { phone, country_code } = req.body;
+  if (phone && phone.length > 0 && country_code && country_code.length > 0) {
+    const newOTP = Math.floor(1000 + Math.random() * 9000);
+    console.log(newOTP);
+    return res.status(200).json({
+      otp_code: newOTP,
+    });
+  }
+  return res.status(400).json({
+    message: "Invalid request.",
+  });
+});
+
 Router.post(
   "/login",
   async (req: Request, res: Response): Promise<Response> => {

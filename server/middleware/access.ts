@@ -24,7 +24,7 @@ export const ownsRestaurant = async (
     if (restaurant && restaurant.user) {
       next();
     } else {
-      return res.status(401).json({
+      return res.status(403).json({
         message: "You do not have access to this resource.",
       });
     }

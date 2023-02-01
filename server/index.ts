@@ -20,6 +20,7 @@ import restaurantRouter from "./routes/restaurant";
 import tableRouter from "./routes/table";
 import cuisineRouter from "./routes/cuisine";
 import dishRouter from "./routes/dish";
+import orderRouter from "./routes/order";
 
 app.use(
   session({
@@ -50,6 +51,7 @@ app.use("/restaurant", restaurantRouter);
 app.use("/table", tableRouter);
 app.use("/cuisine", cuisineRouter);
 app.use("/dish", dishRouter);
+app.use("/order", orderRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.json({
