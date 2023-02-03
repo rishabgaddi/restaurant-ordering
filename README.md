@@ -4,6 +4,14 @@ This is a backend project for a restaurant ordering and payment management syste
 
 ## Installation
 
+Add a .env file in the server directory with the following variable.
+
+```bash
+JWT_SECRET=your_jwt_secret
+```
+
+Adjust the variables in the docker-compose.yml file and Dockerfile to your needs.
+
 Use Docker to install the project.
 
 ```bash
