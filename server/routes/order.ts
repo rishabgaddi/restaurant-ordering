@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 
 import { isAuth } from "../middleware/auth";
 import orderModel from "../models/orderModel";
+import userModel from "../models/userModel";
 
 const Router = express.Router();
 
@@ -105,6 +106,82 @@ Router.put(
     return res.status(400).json({
       message: "Invalid request.",
     });
+  }
+);
+
+Router.get(
+  "/get/:id",
+  isAuth,
+  async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    if (id && id.length > 0) {
+      try {
+        const order = await orderModel.findById(id);
+        if (!order) {
+          return res.status(400).json({
+            message: "Order not found.",
+          });
+        }
+        return res.status(200).json({
+          order,
+        });
+      } catch (error) {
+        return res.status(500).json({
+          message: "Internal server error.\n" + error,
+        });
+      }
+    }
+    return res.status(400).json({
+      message: "Invalid request.",
+    });
+  }
+);
+
+Router.get(
+  "/user/:id",
+  isAuth,
+  async (req: Request, res: Response): Promise<Response> => {
+    const { id } = req.params;
+    if (id && id.length > 0) {
+      try {
+        const orders = await orderModel.find({
+          user: id,
+        });
+        return res.status(200).json({
+          orders,
+        });
+      } catch (error) {
+        return res.status(500).json({
+          message: "Internal server error.\n" + error,
+        });
+      }
+    }
+    return res.status(400).json({
+      message: "Invalid request.",
+    });
+  }
+);
+
+Router.get(
+  "/",
+  isAuth,
+  async (req: Request, res: Response): Promise<Response> => {
+    const token = req.headers["x-access-token"];
+    try {
+      const user = <any>await userModel.findOne({
+        token,
+      });
+      const orders = await orderModel.find({
+        user: user._id,
+      });
+      return res.status(200).json({
+        orders,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Internal server error.\n" + error,
+      });
+    }
   }
 );
 

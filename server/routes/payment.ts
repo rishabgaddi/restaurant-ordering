@@ -3,6 +3,7 @@ import express, { Request, Response } from "express";
 import { isAuth } from "../middleware/auth";
 import orderModel from "../models/orderModel";
 import paymentModel from "../models/paymentModel";
+import userModel from "../models/userModel";
 
 const Router = express.Router();
 
@@ -68,6 +69,29 @@ Router.post(
     return res.status(400).json({
       message: "Invalid request.",
     });
+  }
+);
+
+Router.get(
+  "/",
+  isAuth,
+  async (req: Request, res: Response): Promise<Response> => {
+    const token = req.headers["x-access-token"];
+    try {
+      const user = <any>await userModel.findOne({
+        token,
+      });
+      const payments = await paymentModel.find({
+        user: user._id,
+      });
+      return res.status(200).json({
+        payments,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Internal server error.\n" + error,
+      });
+    }
   }
 );
 

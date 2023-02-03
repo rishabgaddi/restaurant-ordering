@@ -39,4 +39,30 @@ Router.post(
   }
 );
 
+Router.get(
+  "/",
+  isAuth,
+  async (req: Request, res: Response): Promise<Response> => {
+    const token = req.headers["x-access-token"];
+    try {
+      const user = await userModel.findOne({
+        token,
+      });
+      if (!user) {
+        return res.status(400).json({
+          message: "User not found.",
+        });
+      }
+      const restaurants = await restaurantModel.find({ user: user._id });
+      return res.status(200).json({
+        restaurants,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: "Internal server error.\n" + error,
+      });
+    }
+  }
+);
+
 export default Router;
